@@ -295,36 +295,6 @@ View(china_data1)
 
 View(merge.data)
 
-install.packages('maptools')
-install.packages('mapproj')
-library(plotly)
-library(maptools)
-library(ggplot2)
-library(plyr)
-library(mapproj)
-View(china_data)
-View(province)
-setwd("C:/Users/wardz/OneDrive/Documents/数据新闻")
-
-q <- getBaiduMap('全国', width=600, height=600, zoom=18, scale = 2, messaging=FALSE)
-ggmap(q)
-
-
-
-
-province<-read.csv(file = 'C:\\Users\\wardz\\OneDrive\\Documents\\数据新闻\\DATA\\location\\province.csv',header =TRUE,sep=",")
-china_map <-readShapePoly('bou2_4p.shp') # 读取地图空间数据
-china_map <- fortify(china_map) #转化为数据框
-china_data<-read.csv(file = 'C:\\Users\\wardz\\OneDrive\\Documents\\数据新闻\\DATA\\location\\MAPCoSUM1.csv',header =T,sep=',')
-p <- ggplot()+
-  geom_polygon(data=china_map, aes(x=long, y=lat, group=group),fill="grey95", colour="grey60",size=0.25)+ #中国地图
-  geom_point(data=china_data, aes(x =longtitude,y = latitude),size=6,fill="black", alpha=1/40,shape=20, colour="purple")+ #散点图
-  coord_map("polyconic") +
-  #geom_text(data=province,aes(x = Jd,y = Wd,label = 城市)) +
-  theme_void()#图表元素设定
-  
-p <- ggplotly(p, tooltip="text")
-
 
 ########################
 #案件分组
@@ -336,46 +306,12 @@ tb <- table(dfloca)
 tb <- as.data.frame(tb)
 tb <- slice(tb,4:n())
 tb <- data.frame(name=tb$dfloca,amount=tb$Freq)
+write.csv(tb,'C:\\Users\\wardz\\OneDrive\\Documents\\数据新闻\\分省案件数量.csv')
 
 View(tb)
 View(dfloca)
 setwd("C:/Users/wardz/OneDrive/Documents/数据新闻")
-write.csv(tb,'C:\\Users\\wardz\\OneDrive\\Documents\\数据新闻\\分省案件数量.csv')
-tb<-read.csv(file = 'C:\\Users\\wardz\\OneDrive\\Documents\\数据新闻\\分省案件数量1.csv',header =T,sep=',')
 
-china_map <-readShapePoly('bou2_4p.shp') # 读取地图空间数据
-china_map <- fortify(china_map) #转化为数据框
-# Load the plotly package
-install.packages('viridis')
-library(plotly)
-library(viridis)
-View(data)
-# Rorder data + Add a new column with tooltip text
-data <- tb
-data <- data %>%
-  arrange(amount) %>%
-  mutate( name=factor(name, unique(name))) %>%
-  mutate( mytext=paste(
-    "城市: ", name, "\n", 
-    "案件数量: ", amount, sep="")
-  )
-class(data$mytext)
-
-# Make the map (static)
-pl <- data %>%
-  ggplot() +
-  geom_polygon(data = china_map, aes(x=long, y = lat, group = group), fill="grey", alpha=0.3) +
-  geom_point(aes(x=long, y=lat, size=amount, color=amount, text=mytext, alpha=amount) ) +
-  scale_size_continuous(range=c(1,15)) +
-  scale_color_viridis(option="inferno", trans="log" ) +
-  scale_alpha_continuous(trans="log") +
-  theme_void() +
-  #ylim(50,59) +
-  coord_map() +
-  theme(legend.position = "none")
-
-pl <- ggplotly(pl, tooltip="text")
-pl
 
 
 #########################
@@ -412,6 +348,15 @@ wordcloud2(data,size=100,minSize=10,gridSize=1,
            minRotation=-pi/6,maxRotation=pi/6,rotateRatio=0.6,
            
            shape='circle',ellipticity=0.65,widgetsize=NULL)
+
+
+
+
+
+
+
+
+install.packages('gganimate')
 
 
 #########################
