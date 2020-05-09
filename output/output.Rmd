@@ -1,0 +1,194 @@
+---
+title: "是什么让她们变成“致命女人”？"
+runtime: shiny
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### ——对中国女性家庭暴力现状的数据调查  
+2019年11月25日，是第26个消除对妇女的暴力行为国际日，这本是个颇具进步意义的节日，然而在就11月25日前后，网红宇芽遭受家暴和蒋劲夫二次家暴的事件频频登顶微博热搜榜首，这使在舆论场中酝酿已久的“家庭暴力”和“女性亲密关系”问题被拎到台前，一时间，“家庭暴力”讨论度空前，因此广泛关注。 
+
+和十月份的现象级美剧《致命女人》中，主角们遭受的家庭暴力一样，在针对女性的家庭暴力中，施暴者与受害者之间存在一定的亲密关系约束，男性本身的身体优势和传统观念对女性的束缚更是让受害者难以发声难以反抗。
+据人民日报的统计据，中国2.7亿个家庭中，有近30%的家庭存在着不同程度的家庭暴力，家庭妇女的他杀案件中，家暴致死的原因占40%。  
+
+长久的压抑，让受害者们在沉默中爆发，她们有的通过媒体曝光，有的走法律途径申请离婚和人身保护，更有甚者，拿起利器走上了弑夫之路，成为了真正的“致命女人”。  
+
+究竟是什么让她们成为了“致命女人”？  
+
+毫无疑问，就是家庭暴力。  
+
+
+![avatar](C:/Users/wardz/Documents/homework/WhyWomanKill/output/img/1.png)
+
+## 反抗，孤注一掷
+
+40岁纪翠华（化名）用过量的亚硝酸钠杀害了自己的丈夫。   
+
+她考虑了他们的女儿，却还是这样做。    
+
+在警方介入的调查中，警方了解到，纪翠华的丈夫婚后性情极不稳定，时常因为一点小事怒不可遏、大打出手。生下女儿之后，二人的关系急剧恶化，丈夫对女儿不胜其烦，每每遇事，便对纪翠华拳打脚踢，并多次持刀威胁纪，敢反抗就杀了她全家。   
+
+这种噩梦般的生活在二人分居后也毫无回转，在他一次酒后的电话威胁过后，纪下定决心，买来亚硝酸钠进行投毒，并最终导致丈夫吴某某中毒身亡。    
+
+纪翠华所在的安徽省，正是中国家暴发生频数较高的省市之一。而她，也只是无数正遭受家庭暴力的中国妇女中，比较极端的一个反抗案例。    
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(echarts4r)
+library(echarts4r.maps)
+data<-read.csv(file = '~/homework/WhyWomanKill/DATA/分省案件数量2009-2011.csv',header =T,sep=',',dec = ".",quote='')
+json <- jsonlite::read_json('~/homework/WhyWomanKill/DATA/china.json')
+
+data %>% 
+  group_by(year) %>% 
+  e_charts(name,timeline = TRUE) %>% 
+  e_title("2009-2019年各省案件数量图") %>%
+  e_map_register("China", json) %>%
+  e_map(amount,map="China") %>% 
+  e_timeline_opts(
+    autoPlay = TRUE,
+    axis_type = "category",
+    playInterval = 1500,
+    bottom = 0
+  ) %>% 
+  e_visual_map(amount)%>% 
+  e_tooltip(formatter = htmlwidgets::JS("
+  function(params){
+        return('省份： ' + params.name+ 
+                       '</strong><br />案件数量： ' + params.value)
+      }"))%>%
+  e_theme("shine")
+```
+  
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(echarts4r)
+df<-read.csv(file = '~/homework/WhyWomanKill/DATA/分省案件数量2009-2011.csv',header =T,sep=',',dec = ".",quote='')
+
+df %>% 
+  group_by(year) %>% 
+  e_charts(x=name, timeline = TRUE) %>% 
+  e_bar(amount) %>% 
+  e_title("2009-2019年各省案件数量图") %>%
+  e_tooltip(trigger = "item") %>%
+  e_timeline_opts(
+    autoPlay = TRUE,
+    axis_type = "category",
+    playInterval = 1500,
+    bottom = 0
+  ) %>% 
+  e_x_axis(axisLabel = list(interval = 0, rotate = 0))
+```
+  
+那些在家庭暴力中拿起了刀的女人，和影视剧中的“致命女人”有着云泥之别，她们的反抗，只是因为“不在沉默中爆发，就在沉默中灭亡”。  
+
+那究竟是怎样的暴力，才将她们逼上了“以暴制暴”这条违法的不归路呢。  
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(echarts4r)
+
+df<-data.frame(性别=c('男','女'),数量=c(671,3073))
+
+df %>% 
+  head() %>% 
+  dplyr::mutate(model = c('男','女')) %>% 
+  e_charts(model) %>% 
+  e_pie(数量, roseType = "radius") %>%
+  e_tooltip(trigger = "item")%>%
+  e_title('原告性别比')
+```
+
+2019年[OpenLaw](http://openlaw.cn/)记录了3千700余起因家庭暴力而起的诉讼纠纷案件。但除了这些通过法院的协调、执行改善了家暴情况的“幸运儿”，还有多少妇女仍在噩梦般的家暴中选择沉默？她们什么时候才敢、才有机会为自己发声？  
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(echarts4r)
+data<-read.csv(file = '~/homework/WhyWomanKill/DATA/案由词云.csv',header =T,sep=',')
+
+
+data %>%
+  #tibble::rownames_to_column("model") %>%
+  #mutate(model = paste(model, Freq, sep = ",")) %>%
+  e_color_range(V3, color) %>% 
+  e_charts(data) %>% 
+  
+  e_cloud(data, V3, color, shape = "circle", sizeRange = c(12,70)) %>% 
+  e_title("案由", "词云") %>%
+  #e_scatter(data,V3,bind=model) %>%
+  e_tooltip(formatter = htmlwidgets::JS("
+      function(params){
+        var vals = params.name.split(',')
+        return('案由:'+params.name+'<br/>数量:'+'<strong>' + Math.round(Math.pow(2.718281,params.value)) + '</strong>'
+          )}")
+  )
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+df2<-read.csv(file = '~/homework/WhyWomanKill/DATA/案由树图.csv',header =T,sep=',',encoding = 'UTF-8')
+#View(df2)
+
+
+df2 %>% 
+  e_charts() %>% 
+  e_treemap(data, data, Freq) %>% 
+  e_title("案由","树图") %>%
+  e_tooltip()
+```
+
+
+最终，2019年9月4日，纪某某投毒案在合肥市中院公开审理，由于不能提供丈夫对自己长期施加暴力的证据，被告人纪某某被控故意杀人罪，将面临长久的监禁和巨额索赔。  
+
+## 家暴，只有0次和无数次
+
+当下搜索家暴案件，讨论度最高的就是网红宇芽和蒋劲夫再次家暴。其中，宇芽（微博名：宇芽YUYAMIKA）在遭受了前男友五次家暴后在微博发布视频。  
+
+![avatar](C:/Users/wardz/Documents/homework/WhyWomanKill/output/img/2.png)
+
+宇芽发布的视频中，有令人毛骨悚然的电梯施暴画面，也有宇芽大段的自白。她讲述了自己在家暴中的那种绝望、无助、屈辱，当提到遭受家庭暴力的原因时，她淡淡地说，是因为“一些莫名其妙的小事”。    
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+df2<-read.csv(file = '~/homework/WhyWomanKill/DATA/案件类型月份流向.csv',header =T,sep=',')
+
+df2 <- data.frame(
+  Var1=as.character(df2$Var1),
+  Var2=as.character(df2$Var2),
+  Freq=as.numeric(df2$Freq),
+  stringsAsFactors = FALSE)
+
+df2 %>% 
+  e_charts() %>% 
+  e_sankey(Var1, Var2, Freq) %>% 
+  e_tooltip(trigger = "item")%>%
+    e_title("每月案件类型数量")
+```
+
+在央视八集系列片《中国反家暴纪事》中有这样一段对弑夫女犯的采访，女犯这样说道：“去做笔录的时候，警察一定要我填写他家暴的动机，可他打我并不需要特定的原因，什么时候想打，就打了。”  
+
+所有的家庭暴力都有着一个动机明确的开端，如果不及时脱离，它将发展成施暴者个人的情绪宣泄。那些已经成年，甚至步入中年的施暴者们，像是喜怒无常的孩子，不需要什么具体的缘由就会怒不可遏。哪怕只是今天心情不好，回家后发现饭桌上有一道中午的剩饭，也会成为他们对妻子大打出手的理由。  
+
+反观沱沱，一个受过良好教育、从事艺术行业、在宇芽口中“温暖、善良、正直、勇敢、柔情、有担当”的男人，对自己包括宇芽在内的三任伴侣施暴，并用话术和威胁挟制她们，利用她们的沉默，反复施暴。  
+
+沱沱对三任妻子的反复施暴、蒋劲夫对两任女友的反复施暴、李阳对妻子的反复施暴……无数的案例告诉我们：一次肉体上的胜利，很难让施暴者反思，只会降低他下一次动手的门槛。  
+
+在有关家暴的微博热评里，我们经常能看到这样一句话：“家暴，只有0次和无数次”，家暴的反复性，更是让受害者们雪上加霜。  
+
+最终，宇芽获得了网民舆论的广泛支持，并成功与施暴者沱沱（微博名“沱沱的风魔教”）分手。看似彻底逃离苦海，但沱沱真的会反思自己的言行，并在日后善待女性伴侣吗？  
+
+看看他自己是怎么说的吧：  
+
+![avatar](C:/Users/wardz/Documents/homework/WhyWomanKill/output/img/3.png)
+
+## 法律，逐步完善  
+从2000年，湖南出台全国第一部反对家庭暴力的地方性法规《关于预防和制止家庭暴力的决议》，到2015年底《中华人民共和国反家庭暴力法》正式审议表决通过。2016年3月1日，包含6章38条的反家暴法正式施行，逐步完善的法律让正在遭受家暴的女性们有了更多的保障。 
+
+我们可以说，遭受家暴后报警、走法律途径是被害人们的最佳选择，但立案难、取证难、起诉难仍然让一部分被害人望而却步。  
+
+从上映于2001年的国产剧《不要和陌生人说话》，到2019年大热的《致命女人》，影视剧中的施暴者，多数都以死亡收场。而现实中的如同沱沱、蒋劲夫等的施暴者，除了接受社会舆论的谴责之外，并没有受到实质性的惩罚。  
+
+反家暴法法条的完善、对遭受家暴妇女的援助，以及对施暴者的谴责，是国家、妇联、社会、个人都应该分外重视的环节。制止暴力，从改变社会风气开始。  
+
+家庭暴力中的被害人，是应该受到关怀和安慰的群体，少一些“嫁鸡随鸡嫁狗随狗”、“他人那么好怎么可能家暴你”、“苍蝇不叮无缝的蛋，她怎么可能平白无故地打你呢”……不要让被害人鼓起勇气的发声，淹没在这些风凉话里。  
+
+关注女性，制止家庭暴力，便也再没有“致命女人。  
+
+

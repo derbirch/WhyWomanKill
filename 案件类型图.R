@@ -32,6 +32,19 @@ df1$type[df1$type==''] = '其他'
 
 df1$type <- as.factor(df1$type)
 df1$date <- as.factor(df1$date)
+#########################
+
+df5<-as.data.frame(table(df1$type))
+df5 %>% 
+  e_charts(Var1) %>% 
+  e_pie(Freq) %>% 
+  e_tooltip(formatter = htmlwidgets::JS("
+  function(params){
+        return('案件类型： ' + params.name+ 
+                       '</strong><br />案件数量： ' + params.value+'<br/>占比：'+(params.value/3744*100).toFixed(0)+'%')
+      }"))
+3744
+###############################################
 
 View(df1)
 class(df1$date)
@@ -73,6 +86,6 @@ df2 %>%
 ######################################
 setwd('~/homework/WhyWomanKill')
 #write.csv(df2,'~/homework/WhyWomanKill/DATA/案件类型月份流向.csv')
-test<-read.csv(file = '~/homework/WhyWomanKill/DATA/案件类型月份流向.csv',header =T,sep=',')
-View(test)
+df2<-read.csv(file = '~/homework/WhyWomanKill/DATA/案件类型月份流向.csv',header =T,sep=',')
+View(df2)
 
